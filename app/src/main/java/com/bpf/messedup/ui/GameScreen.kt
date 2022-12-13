@@ -114,7 +114,7 @@ fun GameLayout(modifier: Modifier = Modifier) {
 
         ) {
         Text(
-            text = "scrambleun",
+            text = "messedUp",
             fontSize = 45.sp,
             modifier = modifier.align(Alignment.CenterHorizontally)
         )
