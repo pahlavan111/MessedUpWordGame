@@ -16,24 +16,15 @@
 package com.bpf.messedup.ui
 
 import android.app.Activity
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -42,12 +33,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bpf.messedup.R
 import com.bpf.messedup.ui.theme.MessedUpTheme
 
 
 @Composable
-fun GameScreen(modifier: Modifier = Modifier) {
+fun GameScreen(
+    modifier: Modifier = Modifier,
+    gameViewModel: GameViewModel = viewModel()
+) {
+    val gameUiState by gameViewModel.uiState.collectAsState()
+
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -56,7 +53,7 @@ fun GameScreen(modifier: Modifier = Modifier) {
     ) {
 
         GameStatus()
-        GameLayout()
+        GameLayout(currentMessedUpWord = gameUiState.currentMessedUpWord)
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -108,13 +105,16 @@ fun GameStatus(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun GameLayout(modifier: Modifier = Modifier) {
+fun GameLayout(
+    modifier: Modifier = Modifier,
+    currentMessedUpWord: String
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(24.dp),
 
         ) {
         Text(
-            text = "messedUp",
+            text = currentMessedUpWord,
             fontSize = 45.sp,
             modifier = modifier.align(Alignment.CenterHorizontally)
         )
