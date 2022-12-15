@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.bpf.messedup.data.MAX_NO_OF_WORDS
 import com.bpf.messedup.data.SCORE_INCREASE
 import com.bpf.messedup.data.allWords
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +44,7 @@ class GameViewModel : ViewModel() {
         }
     }
 
-    private fun resetGame() {
+    fun resetGame() {
         usedWords.clear()
         _uiState.value = GameUiState(pickARandomWordAndShuffle())
     }
@@ -67,13 +68,26 @@ class GameViewModel : ViewModel() {
     }
 
     private fun updateGameState(updatedGameScore: Int) {
-        _uiState.update {
-            it.copy(
-                isGuessedWordWrong = false,
-                currentWordCount = it.currentWordCount.inc(),
-                currentMessedUpWord = pickARandomWordAndShuffle(),
-                score = updatedGameScore
-            )
+        if (usedWords.size == MAX_NO_OF_WORDS) {
+            //last round
+            _uiState.update {
+                it.copy(
+                    isGuessedWordWrong = false,
+                    currentWordCount = it.currentWordCount.inc(),
+                    score = updatedGameScore,
+                    isGameOver = true
+                )
+            }
+
+        } else {
+            _uiState.update {
+                it.copy(
+                    isGuessedWordWrong = false,
+                    currentWordCount = it.currentWordCount.inc(),
+                    currentMessedUpWord = pickARandomWordAndShuffle(),
+                    score = updatedGameScore
+                )
+            }
         }
     }
 
