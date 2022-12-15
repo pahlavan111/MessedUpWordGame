@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.bpf.messedup.data.SCORE_INCREASE
 import com.bpf.messedup.data.allWords
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,8 +54,9 @@ class GameViewModel : ViewModel() {
     }
 
     fun checkUserGuess() {
-        if (userGuess.equals(currentWord)) {
-
+        if (userGuess == (currentWord)) {
+            val updateScore = _uiState.value.score.plus(SCORE_INCREASE)
+            updateGameState(updateScore)
         } else {
             // User's guess is wrong, show an error
             _uiState.update { currentState ->
@@ -64,6 +66,16 @@ class GameViewModel : ViewModel() {
         updateUserGuess("")
     }
 
+    private fun updateGameState(updatedGameScore: Int) {
+        _uiState.update {
+            it.copy(
+                isGuessedWordWrong = false,
+                currentWordCount = it.currentWordCount.inc(),
+                currentMessedUpWord = pickARandomWordAndShuffle(),
+                score = updatedGameScore
+            )
+        }
+    }
 }
 
 private fun shuffleCurrentWord(word: String): String {
