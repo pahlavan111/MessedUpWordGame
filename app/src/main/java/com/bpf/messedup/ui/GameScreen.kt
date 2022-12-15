@@ -39,6 +39,7 @@ fun GameScreen(
 
         GameStatus()
         GameLayout(
+            isGuessWrong = gameUiState.isGuessedWordWrong,
             currentMessedUpWord = gameUiState.currentMessedUpWord,
             userGuess = gameViewModel.userGuess,
             onUserGuessChanged = { gameViewModel.updateUserGuess(it) },
@@ -95,6 +96,7 @@ fun GameStatus(modifier: Modifier = Modifier) {
 
 @Composable
 fun GameLayout(
+    isGuessWrong: Boolean,
     onUserGuessChanged: (String) -> Unit,
     onKeyboardDone: () -> Unit,
     currentMessedUpWord: String,
@@ -120,8 +122,14 @@ fun GameLayout(
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
             onValueChange = onUserGuessChanged,
-            label = { Text(stringResource(R.string.enter_your_word)) },
-            isError = false,
+            label = {
+                if (isGuessWrong) {
+                    Text(text = stringResource(R.string.wrong_guess))
+                } else {
+                    Text(stringResource(R.string.enter_your_word))
+                }
+            },
+            isError = isGuessWrong,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             ),
