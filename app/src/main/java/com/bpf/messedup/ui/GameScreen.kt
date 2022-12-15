@@ -1,18 +1,3 @@
-/*
- * Copyright (c)2022 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.bpf.messedup.ui
 
 import android.app.Activity
@@ -53,7 +38,11 @@ fun GameScreen(
     ) {
 
         GameStatus()
-        GameLayout(currentMessedUpWord = gameUiState.currentMessedUpWord)
+        GameLayout(
+            currentMessedUpWord = gameUiState.currentMessedUpWord,
+            userGuess = gameViewModel.userGuess,
+            onUserGuessChanged = { gameViewModel.updateUserGuess(it) },
+            onKeyboardDone = { gameViewModel.checkUserGuess() })
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -74,7 +63,7 @@ fun GameScreen(
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(start = 8.dp),
-                onClick = { }
+                onClick = { gameViewModel.checkUserGuess() }
             ) {
                 Text(stringResource(R.string.submit))
             }
@@ -106,8 +95,11 @@ fun GameStatus(modifier: Modifier = Modifier) {
 
 @Composable
 fun GameLayout(
+    onUserGuessChanged: (String) -> Unit,
+    onKeyboardDone: () -> Unit,
+    currentMessedUpWord: String,
+    userGuess: String,
     modifier: Modifier = Modifier,
-    currentMessedUpWord: String
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(24.dp),
@@ -124,17 +116,17 @@ fun GameLayout(
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         OutlinedTextField(
-            value = "",
+            value = userGuess,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { },
+            onValueChange = onUserGuessChanged,
             label = { Text(stringResource(R.string.enter_your_word)) },
             isError = false,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { }
+                onDone = { onKeyboardDone() }
             ),
         )
     }
