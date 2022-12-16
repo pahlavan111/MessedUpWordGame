@@ -15,16 +15,16 @@
   -->
 
 <resources>
-    <string name="app_name">Messed Up</string>
-    <string name="instructions">Arrange the word using all the letters.</string>
-    <string name="skip">Skip</string>
-    <string name="submit">Submit</string>
-    <string name="score">Score: %d</string>
-    <string name="word_count">%d of 10 words</string>
-    <string name="enter_your_word">Enter your word</string>
-    <string name="congratulations">Congratulations!</string>
-    <string name="you_scored">"You scored: %d"</string>
-    <string name="exit">Exit</string>
-    <string name="play_again">Play Again</string>
-    <string name="wrong_guess">Wrong Guess!</string>
+    <string name="app_name">حدس کلمه</string>
+    <string name="instructions">با استفاده از تمامی حروف زیر کلمه مورد نظر را حدس بزنید</string>
+    <string name="skip">برو بعدی</string>
+    <string name="submit">ثبت پاسخ</string>
+    <string name="score">امتیاز : %d</string>
+    <string name="word_count">%d از 10 کلمه</string>
+    <string name="enter_your_word">پاسخ خود را وارد کنید</string>
+    <string name="congratulations">تبریک!</string>
+    <string name="you_scored">"امتیاز شما: %d"</string>
+    <string name="exit">خروج</string>
+    <string name="play_again">بازی دوباره</string>
+    <string name="wrong_guess">اشتباه حدس زدی!</string>
 </resources>
